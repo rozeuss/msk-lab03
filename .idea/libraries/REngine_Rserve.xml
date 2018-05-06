@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="REngine/Rserve">
+    <CLASSES>
+      <root url="jar://G:/Programy/R-3.3.2/library/Rserve/java/REngine.jar!/" />
+      <root url="jar://G:/Programy/R-3.3.2/library/Rserve/java/Rserve.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
