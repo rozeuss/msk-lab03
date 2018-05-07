@@ -1,5 +1,7 @@
 package dissimlab.monitors;
 
+import java.util.ArrayList;
+
 /**
  * Description...
  * 
@@ -8,10 +10,14 @@ package dissimlab.monitors;
  */
 public class ChangesList {
 
-	private java.util.Vector<Change> changes;
+	private ArrayList<Change> changes;
+
+	public ArrayList<Change> getChangesList() {
+		return changes;
+	}
 
 	public ChangesList() {
-		changes = new java.util.Vector<Change>();
+		changes = new ArrayList<>();
 	}
 
 	public Change get(int index) {
@@ -23,7 +29,7 @@ public class ChangesList {
 	}
 
 	public Change getLast() {
-		return changes.lastElement();
+		return changes.get(changes.size() - 1);
 	}
 
 	public void add(Change ch) {
