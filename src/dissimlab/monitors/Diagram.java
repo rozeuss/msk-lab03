@@ -367,9 +367,10 @@ public class Diagram extends javax.swing.JFrame
 	}
 	
 	private void actualizeValuesRange(MonitoredVar mv) {
-		double min = RStatistics.min(mv);
+		RStatistics rStatistics = RStatistics.getInstance();
+		double min = rStatistics.min(mv);
 //		double min = Statistics.min(mv);
-		double max = RStatistics.max(mv);
+		double max = rStatistics.max(mv);
 //		double max = Statistics.max(mv);
 		double mint = mv.getChanges().get(0).getTime();
 		double maxt = mv.getChanges().getLast().getTime();

@@ -29,28 +29,42 @@ public class RStatistics {
             0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01,
             0.001};
 
+    private static RStatistics rStatistics = new RStatistics();
+    private static RConnection connection;
+
+    private RStatistics() {
+        try {
+            connection = new RConnection();
+        } catch (RserveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeConnection(){
+        connection.close();
+    }
+
+    public static RStatistics getInstance() {
+        if (rStatistics == null) {
+            rStatistics = new RStatistics();
+        }
+        return rStatistics;
+    }
+
     /*
-     * obliczanie srendiej arytmetycznej na podstawie danej zmiennej
-     * monitorowanej
-     */
-    public static double arithmeticMean(MonitoredVar monitoredVar) {
-        RConnection connection = null;
+         * obliczanie srendiej arytmetycznej na podstawie danej zmiennej
+         * monitorowanej
+         */
+    public double arithmeticMean(MonitoredVar monitoredVar) {
         List<Double> values = getChangesValues(monitoredVar);
         double result = 0;
         try {
-            connection = new RConnection();
             connection.assign("myData", getDoublesArray(values));
             connection.eval("meanVal=mean(myData)");
             result = connection.eval("meanVal").asDouble();
 //            System.out.println("The mean of given vector is=" + result);
-        } catch (RserveException e) {
+        } catch (REXPMismatchException | REngineException e) {
             e.printStackTrace();
-        } catch (REXPMismatchException e) {
-            e.printStackTrace();
-        } catch (REngineException e) {
-            e.printStackTrace();
-        } finally {
-            connection.close();
         }
         return result;
     }
@@ -59,23 +73,15 @@ public class RStatistics {
     /*
      * srednia harmoniczna
      */
-    public static double harmonicMean(MonitoredVar monitoredVar) {
-        RConnection connection = null;
+    public double harmonicMean(MonitoredVar monitoredVar) {
         List<Double> values = getChangesValues(monitoredVar);
         double result = 0;
         try {
-            connection = new RConnection();
             connection.assign("myData", getDoublesArray(values));
             REXP x = connection.eval("harmonicMeanVal=1/mean(1/myData)");
             result = x.asDouble();
-        } catch (RserveException e) {
+        } catch (REXPMismatchException | REngineException e) {
             e.printStackTrace();
-        } catch (REXPMismatchException e) {
-            e.printStackTrace();
-        } catch (REngineException e) {
-            e.printStackTrace();
-        } finally {
-            connection.close();
         }
         return result;
     }
@@ -84,23 +90,15 @@ public class RStatistics {
     /*
      * rozstep
      */
-    public static double range(MonitoredVar monitoredVar) {
-        RConnection connection = null;
+    public double range(MonitoredVar monitoredVar) {
         List<Double> values = getChangesValues(monitoredVar);
         double result = 0;
         try {
-            connection = new RConnection();
             connection.assign("myData", getDoublesArray(values));
             REXP x = connection.eval("rangeVal=range(myData)");
             result = x.asDouble();
-        } catch (RserveException e) {
+        } catch (REXPMismatchException | REngineException e) {
             e.printStackTrace();
-        } catch (REXPMismatchException e) {
-            e.printStackTrace();
-        } catch (REngineException e) {
-            e.printStackTrace();
-        } finally {
-            connection.close();
         }
         return result;
 //        TODO
@@ -111,23 +109,15 @@ public class RStatistics {
     /*
      * wariancja
      */
-    public static double variance(MonitoredVar monitoredVar) {
-        RConnection connection = null;
+    public double variance(MonitoredVar monitoredVar) {
         List<Double> values = getChangesValues(monitoredVar);
         double result = 0;
         try {
-            connection = new RConnection();
             connection.assign("myData", getDoublesArray(values));
             REXP x = connection.eval("variance=var(myData)");
             result = x.asDouble();
-        } catch (RserveException e) {
+        } catch (REXPMismatchException | REngineException e) {
             e.printStackTrace();
-        } catch (REXPMismatchException e) {
-            e.printStackTrace();
-        } catch (REngineException e) {
-            e.printStackTrace();
-        } finally {
-            connection.close();
         }
         return result;
     }
@@ -135,65 +125,41 @@ public class RStatistics {
     /*
      * odchylenie standardowe
      */
-    public static double standardDeviation(MonitoredVar monitoredVar) {
-        RConnection connection = null;
+    public double standardDeviation(MonitoredVar monitoredVar) {
         List<Double> values = getChangesValues(monitoredVar);
         double result = 0;
         try {
-            connection = new RConnection();
             connection.assign("myData", getDoublesArray(values));
             REXP x = connection.eval("standardDeviation=sd(myData)");
             result = x.asDouble();
-        } catch (RserveException e) {
+        } catch (REXPMismatchException | REngineException e) {
             e.printStackTrace();
-        } catch (REXPMismatchException e) {
-            e.printStackTrace();
-        } catch (REngineException e) {
-            e.printStackTrace();
-        } finally {
-            connection.close();
         }
         return result;
     }
 
-    public static double min(MonitoredVar monitoredVar) {
-        RConnection connection = null;
+    public double min(MonitoredVar monitoredVar) {
         List<Double> values = getChangesValues(monitoredVar);
         double result = 0;
         try {
-            connection = new RConnection();
             connection.assign("myData", getDoublesArray(values));
             REXP x = connection.eval("minVal=min(myData)");
             result = x.asDouble();
-        } catch (RserveException e) {
+        } catch (REXPMismatchException | REngineException e) {
             e.printStackTrace();
-        } catch (REXPMismatchException e) {
-            e.printStackTrace();
-        } catch (REngineException e) {
-            e.printStackTrace();
-        } finally {
-            connection.close();
         }
         return result;
     }
 
-    public static double max(MonitoredVar monitoredVar) {
-        RConnection connection = null;
+    public double max(MonitoredVar monitoredVar) {
         List<Double> values = getChangesValues(monitoredVar);
         double result = 0;
         try {
-            connection = new RConnection();
             connection.assign("myData", getDoublesArray(values));
             REXP x = connection.eval("maxVal=max(myData)");
             result = x.asDouble();
-        } catch (RserveException e) {
+        } catch (REXPMismatchException | REngineException e) {
             e.printStackTrace();
-        } catch (REXPMismatchException e) {
-            e.printStackTrace();
-        } catch (REngineException e) {
-            e.printStackTrace();
-        } finally {
-            connection.close();
         }
         return result;
     }
@@ -209,7 +175,7 @@ public class RStatistics {
      * estymacja przedzialowa wartosci oczekiwanej E{X} = 0gdy nie znamy
      * odchylenia standardowego, wykorzystujemy tutaj rozklad Studenta
      */
-    public static double[] intervalEstimationOfEX(MonitoredVar monitoredVar,
+    public double[] intervalEstimationOfEX(MonitoredVar monitoredVar,
                                                   double gamma) {
         double quantile = (1 + gamma) / 2;
         int numberOfSamples = monitoredVar.numberOfSamples();
@@ -250,7 +216,7 @@ public class RStatistics {
         return row;
     }
 
-    private static double getInterval(MonitoredVar var,
+    private double getInterval(MonitoredVar var,
                                       double tFromStudentsDistribution) {
         int samples = var.numberOfSamples();
         return (standardDeviation(var) * tFromStudentsDistribution)
@@ -260,7 +226,7 @@ public class RStatistics {
     /*
      * estymacja przedziałowa wariancji lewa i prawa granica przedzialu
      */
-    public static double[] intervalEstimationOfVariance(
+    public  double[] intervalEstimationOfVariance(
             MonitoredVar monitoredVar, double gamma) {
         int column, rowRight, rowLeft;
         double[] result = new double[2];

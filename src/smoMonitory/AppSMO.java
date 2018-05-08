@@ -11,6 +11,7 @@ package smoMonitory;
 import dissimlab.monitors.Diagram;
 import dissimlab.monitors.Diagram.DiagramType;
 import dissimlab.monitors.RStatistics;
+import dissimlab.monitors.Statistics;
 import dissimlab.simcore.SimControlEvent;
 import dissimlab.simcore.SimControlException;
 import dissimlab.simcore.SimManager;
@@ -33,27 +34,36 @@ public class AppSMO {
             // Uruchomienie symulacji za pośrednictwem metody "startSimulation"
             model.startSimulation();
 
+            RStatistics rStatistics = RStatistics.getInstance();
             // Formatowanie liczby do 2 miejsc po przecinku
-            double wynik = new BigDecimal(RStatistics
+            double wynik = new BigDecimal(rStatistics
                     .arithmeticMean(smo.MVczasy_oczekiwania)).setScale(2,
                     BigDecimal.ROUND_HALF_UP).doubleValue();
             System.out
                     .println("Wartość średnia czasu oczekiwania na obsługę:   "
                             + wynik);
 
-            wynik = new BigDecimal(RStatistics
-                    .harmonicMean(smo.MVczasy_oczekiwania)).setScale(2,
+            wynik = new BigDecimal(Statistics
+                    .variance(smo.MVczasy_oczekiwania)).setScale(2,
                     BigDecimal.ROUND_HALF_UP).doubleValue();
             System.out
-                    .println("Harmonic:     " + wynik);
+                    .println("WARIANCJA Statistics:   "
+                            + wynik);
 
-            wynik = new BigDecimal(RStatistics
+            wynik = new BigDecimal(rStatistics
+                    .variance(smo.MVczasy_oczekiwania)).setScale(2,
+                    BigDecimal.ROUND_HALF_UP).doubleValue();
+            System.out
+                    .println("WARIANCJA RStatistics:   "
+                            + wynik);
+
+            wynik = new BigDecimal(rStatistics
                     .standardDeviation(smo.MVczasy_oczekiwania)).setScale(2,
                     BigDecimal.ROUND_HALF_UP).doubleValue();
             System.out
                     .println("Odchylenie standardowe dla czasu obsługi:       "
                             + wynik);
-            wynik = new BigDecimal(RStatistics.max(smo.MVczasy_oczekiwania))
+            wynik = new BigDecimal(rStatistics.max(smo.MVczasy_oczekiwania))
                     .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             System.out.println("Wartość maksymalna czasu oczekiwania na obsługę: "
                     + wynik);
@@ -62,7 +72,7 @@ public class AppSMO {
                     "Czasy oczekiwania na obsługę");
             d3.add(smo.MVczasy_oczekiwania, java.awt.Color.BLUE);
             d3.show();
-
+            rStatistics.closeConnection();
         } catch (SimControlException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
